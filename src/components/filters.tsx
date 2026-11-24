@@ -3,13 +3,21 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useTransition } from 'react';
 import { SlidersHorizontal, RotateCcw, ChevronDown } from 'lucide-react';
 import { stateNames } from '@/lib/domain/demo-identities';
-import { filterQuery, defaultFilters, type Filters } from '@/lib/domain/filters';
+import {
+  filterQuery,
+  defaultFilters,
+  annualPeriods,
+  isAnnualPeriod,
+  type Filters,
+} from '@/lib/domain/filters';
 export function FilterBar({
   filters,
   variant = 'full',
+  geographyReason,
 }: {
   filters: Filters;
   variant?: 'full' | 'overview';
+  geographyReason?: string;
 }) {
   const path = usePathname(),
     router = useRouter(),
@@ -19,7 +27,8 @@ export function FilterBar({
   function update(key: keyof Filters, value: string) {
     const query = new URLSearchParams(params);
     for (const [k, v] of Object.entries({ ...filters, [key]: value })) query.set(k, v);
-    if (variant === 'overview' && key === 'geography') {
+    if (key === 'period') query.set('compare', 'none');
+    if (key === 'geography') {
       if (value === 'MY') query.delete('state');
       else query.set('state', value);
     }
@@ -36,12 +45,22 @@ export function FilterBar({
           Tempoh
           <select value={filters.period} onChange={(e) => update('period', e.target.value)}>
             <option value="2026-08-09">9 Ogos 2026</option>
-            <option value="2026-08-02">2 Ogos 2026 · demo sahaja</option>
+            <option value="2026-08-02">2 Ogos 2026 · demo</option>
+            {annualPeriods.map((year) => (
+              <option key={year} value={year}>
+                {year} · Tahunan
+              </option>
+            ))}
           </select>
         </label>
         <label>
           Geografi
-          <select value={filters.geography} onChange={(e) => update('geography', e.target.value)}>
+          <select
+            value={filters.geography}
+            disabled={Boolean(geographyReason)}
+            aria-describedby={geographyReason ? 'geography-filter-reason' : undefined}
+            onChange={(e) => update('geography', e.target.value)}
+          >
             <option value="MY">Seluruh Malaysia</option>
             {Object.entries(stateNames).map(([id, name]) => (
               <option key={id} value={id}>
@@ -56,7 +75,9 @@ export function FilterBar({
               Bandingkan
               <select value={filters.compare} onChange={(e) => update('compare', e.target.value)}>
                 <option value="none">Tiada perbandingan</option>
-                <option value="2026-08-02">2 Ogos 2026 · demo</option>
+                {!isAnnualPeriod(filters.period) && (
+                  <option value="2026-08-02">2 Ogos 2026 · demo</option>
+                )}
               </select>
             </label>
             <button
@@ -73,12 +94,21 @@ export function FilterBar({
           title="Tetapkan semula penapis"
           aria-label="Tetapkan semula penapis"
           onClick={() =>
-            startTransition(() => router.replace(`${path}?${filterQuery(defaultFilters)}`))
+            startTransition(() =>
+              router.replace(
+                `${path}?${filterQuery({ ...defaultFilters, geography: geographyReason ? 'MY' : defaultFilters.geography, layer: params.get('domain') === 'harm' ? 'harm' : defaultFilters.layer })}${params.get('domain') === 'harm' ? '&domain=harm' : params.get('domain') === 'treatment' ? '&domain=treatment' : ''}`,
+              ),
+            )
           }
         >
           <RotateCcw size={14} />
         </button>
       </div>
+      {geographyReason && (
+        <p className="filter-scope-note" id="geography-filter-reason">
+          {geographyReason}
+        </p>
+      )}
       {variant === 'full' && expanded && (
         <div className="expanded-filters">
           <label>
@@ -86,7 +116,7 @@ export function FilterBar({
             <select value={filters.source} onChange={(e) => update('source', e.target.value)}>
               <option value="all">Semua (diasingkan)</option>
               <option value="supplied">Petikan dibekalkan</option>
-              <option value="synthetic">DEMO / SYNTHETIC</option>
+              <option value="synthetic">senario rekaan</option>
             </select>
           </label>
           <label>

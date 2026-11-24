@@ -3,8 +3,7 @@ import type { NextConfig } from 'next';
 const config: NextConfig = {
   poweredByHeader: false,
   serverExternalPackages: ['pg', 'exceljs'],
-  // The map geometry is read from public/ at request time. Serverless bundles
-  // exclude public/, so the files are traced into the function explicitly.
+  // Existing hosted demo reads geometry through filesystem APIs at request time.
   outputFileTracingIncludes: { '/**': ['./public/geo/*.geojson'] },
   async headers() {
     return [

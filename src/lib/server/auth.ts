@@ -40,7 +40,7 @@ export async function getSession(): Promise<Session> {
     throw new Error('Identiti pengeluaran belum diluluskan. Akses ditutup.');
   const h = await headers();
   if (!isAllowedHost(h.get('host')))
-    throw new Error('Demonstrasi hanya tersedia secara setempat atau pada hos yang dibenarkan.');
+    throw new Error('Demonstrasi hanya tersedia pada hos yang dibenarkan.');
   const token = (await cookies()).get('dashboard-session')?.value;
   if (!token) return effectiveScope({ ...demoIdentities.executive, expires: Date.now() + 3600000 });
   try {

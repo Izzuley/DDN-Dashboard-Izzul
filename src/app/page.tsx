@@ -1,23 +1,20 @@
+import { pillars, pillarIds } from '@/lib/domain/pillars';
 import Link from 'next/link';
 import { ArrowUpRight, ChevronDown } from 'lucide-react';
 import { getSession } from '@/lib/server/auth';
 import { getMapZones, getMetrics } from '@/lib/server/dal';
 import { getStateShapes } from '@/lib/server/geometry';
-import { parseFilters, filterQuery } from '@/lib/domain/filters';
+import { parseFilters, filterQuery, isAnnualPeriod, navigationHref } from '@/lib/domain/filters';
+import { stateNames } from '@/lib/domain/demo-identities';
 import { dateBM, formatNumber } from '@/lib/domain/types';
 import { PageHeading, Badge } from '@/components/ui';
 import { FilterBar } from '@/components/filters';
 import { ThreatMap } from '@/components/threat-map';
+import { TerasCharacter, TerasEnsemble } from '@/components/illustrations';
 
-const teras = [
-  { n: 1, title: 'Pendidikan pencegahan', status: 'Konteks sumber & demo', accent: 'teal' },
-  { n: 2, title: 'Rawatan & pemulihan', status: 'Petikan sumber tersedia', accent: 'blue' },
-  { n: 3, title: 'Penguatkuasaan', status: 'Petikan sumber & demo', accent: 'amber' },
-  { n: 4, title: 'Pengurangan kemudaratan', status: 'Senario demo', accent: 'rose' },
-  { n: 5, title: 'Kerjasama antarabangsa', status: 'Senario demo', accent: 'violet' },
-];
+const teras = pillarIds.map((n) => ({ n, ...pillars[n], status: 'Sumber & domain dipelihara' }));
 
-export default async function Overview({
+export default async function ScenarioSemasa({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -30,47 +27,25 @@ export default async function Overview({
     getStateShapes(),
   ]);
   const metric = (code: string) => metrics.find((m) => m.definition.code === code);
-  const total = metric('T2-CLIENTS'),
-    institution = metric('T2-INSTITUTION'),
-    community = metric('T2-COMMUNITY'),
+  const annual = isAnnualPeriod(filters.period);
+  const total = metric(annual ? 'A-2-1-TOTAL' : 'T2-CLIENTS'),
+    institution = metric(annual ? 'A-2-1-INSTITUTION' : 'T2-INSTITUTION'),
+    community = metric(annual ? 'A-2-1-COMMUNITY' : 'T2-COMMUNITY'),
     complaints = metric('T3-COMPLAINTS');
   const value = (m: typeof total) =>
     m?.state === 'value' && m.value !== null ? formatNumber(m.value) : 'Tidak tersedia';
   const snapshot = total ?? institution ?? community ?? complaints;
   const query = filterQuery(filters);
-  const otherFilters =
-    filters.source !== 'all' ||
-    filters.organisation !== 'all' ||
-    filters.confidence !== 'all' ||
-    filters.compare !== 'none';
 
   return (
     <div className="page-content overview-page">
       <PageHeading
         eyebrow="PUSAT STRATEGIK KEBANGSAAN"
-        title="Gambaran nasional"
-        description="Ringkasan klien AADK dan aduan, dengan ruang analisis geografi penuh pada halaman yang sama."
+        title="Scenario Semasa"
+        description="Ringkasan nasional, analisis peta negeri dan tindakan bersama dalam satu paparan."
+        art={<TerasEnsemble />}
       />
       <FilterBar filters={filters} />
-      {otherFilters && (
-        <p className="overview-filter-note">
-          Penapis tambahan daripada pautan masih digunakan.{' '}
-          <Link
-            href={
-              '/?' +
-              filterQuery({
-                ...filters,
-                source: 'all',
-                organisation: 'all',
-                confidence: 'all',
-                compare: 'none',
-              })
-            }
-          >
-            Kosongkan penapis tambahan
-          </Link>
-        </p>
-      )}
       <section className="overview-snapshot" aria-label="Data dibekalkan">
         <div className="overview-section-heading">
           <div>
@@ -78,7 +53,12 @@ export default async function Overview({
             <h2>Klien AADK & aduan</h2>
           </div>
           <div className="overview-source-links">
-            {snapshot && <span>{dateBM(snapshot.period)} · Malaysia</span>}
+            {snapshot && (
+              <span>
+                {dateBM(snapshot.period)} ·{' '}
+                {filters.geography === 'MY' ? 'Malaysia' : stateNames[filters.geography]}
+              </span>
+            )}
             <Link href={'/reports?' + query}>
               Lihat laporan <ArrowUpRight size={14} />
             </Link>
@@ -90,7 +70,11 @@ export default async function Overview({
               <div className="overview-total">
                 <h3>Jumlah klien AADK</h3>
                 <div className="metric-number">{value(total)}</div>
-                <p>Klien dalam rawatan institusi dan komuniti.</p>
+                <p>
+                  {annual
+                    ? 'Klien direkodkan sepanjang tahun dalam rawatan institusi dan komuniti.'
+                    : 'Klien dalam rawatan institusi dan komuniti.'}
+                </p>
               </div>
               <div className="overview-breakdown">
                 <p className="overview-part-label">Daripada jumlah ini</p>
@@ -111,16 +95,17 @@ export default async function Overview({
             <div className="overview-complaints">
               <h3>Aduan terkumpul</h3>
               <div className="metric-number">{value(complaints)}</div>
-              <p>Aduan ialah isyarat, bukan kesalahan yang disahkan atau ukuran prevalens.</p>
+              <p>
+                {annual
+                  ? 'Jumlah tahunan ditahan: angka 7,394 dan 7,395 dalam sumber 2025 tidak konsisten.'
+                  : 'Aduan ialah isyarat, bukan kesalahan yang disahkan atau ukuran prevalens.'}
+              </p>
             </div>
           </div>
         ) : (
           <div className="overview-unavailable">
             <h3>Tiada petikan untuk penapis ini</h3>
-            <p>
-              Empat angka ini tersedia hanya bagi seluruh Malaysia pada 9 Ogos 2026, tertakluk akses
-              anda.
-            </p>
+            <p>Tiada nilai sumber yang sepadan dengan tempoh, geografi dan akses semasa.</p>
             <Link
               href={
                 '/?' +
@@ -145,8 +130,10 @@ export default async function Overview({
             <div>
               <h3>Sumber & tarikh</h3>
               <p>
-                Statistik Mingguan AADK, laporan 9 Ogos 2026, halaman 2. Ini petikan laporan yang
-                dibekalkan, bukan suapan langsung.
+                {annual
+                  ? `Buku Maklumat Dadah 2025, Jadual 2.1, halaman 42–43. Tempoh ${filters.period}, tahunan.`
+                  : 'Statistik Mingguan AADK, laporan 9 Ogos 2026, halaman 2.'}{' '}
+                Ini petikan laporan yang dibekalkan, bukan suapan langsung.
               </p>
               {snapshot && <p>Dikemas kini dalam aplikasi: {dateBM(snapshot.refreshed)}.</p>}
             </div>
@@ -157,7 +144,11 @@ export default async function Overview({
                 tidak ditambah kepada jumlah klien. Bilangan klien bukan ukuran prevalens
                 masyarakat.
               </p>
-              <p>Satu tempoh laporan tersedia; perubahan rasmi belum boleh dikira.</p>
+              <p>
+                {annual
+                  ? 'Kaedah kiraan rawatan berubah pada 2025 kepada fasiliti terakhir. Perubahan merentas 2025 atau terhadap stok mingguan tidak dikira.'
+                  : 'Satu tempoh mingguan dibekalkan; perubahan rasmi belum boleh dikira.'}
+              </p>
             </div>
             <div>
               <h3>Perkara belum disahkan</h3>
@@ -174,10 +165,13 @@ export default async function Overview({
         </details>
       </section>
       <div className="overview-demo-heading">
-        <span className="eyebrow small">SENARIO DEMO</span>
+        <span className="eyebrow small">
+          {annual ? 'KONTEKS NEGERI · SUMBER DIBEKALKAN' : 'SENARIO DEMO'}
+        </span>
         <p>
-          Nilai negeri di bawah ialah rekaan untuk meneroka peta; ia bukan pecahan angka AADK di
-          atas.
+          {annual
+            ? 'Peta beban menggunakan rekod dipadankan AADK/PDRM/KKM/PPP; skopnya lebih luas daripada klien rawatan AADK di atas. Lapisan lain belum mempunyai ukuran tahunan yang sepadan.'
+            : 'Nilai negeri di bawah ialah rekaan untuk meneroka peta; ia bukan pecahan angka AADK di atas.'}
         </p>
       </div>
       <ThreatMap zones={zones} shapes={shapes} filters={filters} full />
@@ -188,10 +182,7 @@ export default async function Overview({
         </p>
         <p>
           <strong>Peringkat daerah</strong>
-          <span>
-            Data belum tersedia / belum disahkan. Paparan negeri digunakan sehingga data, populasi
-            dan sempadan daerah sah tersedia.
-          </span>
+          <span>Data, populasi dan sempadan daerah belum disahkan. Paparan negeri digunakan.</span>
         </p>
         <p>
           <strong>Jadual setara</strong>
@@ -200,16 +191,17 @@ export default async function Overview({
       </div>
       <section className="overview-teras" aria-labelledby="overview-teras-heading">
         <div className="overview-section-heading">
-          <h2 id="overview-teras-heading">Teroka lima teras</h2>
-          <span>Dasar Dadah Negara 2017</span>
+          <h2 id="overview-teras-heading">Teroka empat teras</h2>
+          <span>DDN 2.0 · Empat teras</span>
         </div>
         <div className="overview-teras-grid">
           {teras.map((t) => (
             <Link
               key={t.n}
-              href={'/teras/' + t.n + '?' + query}
+              href={navigationHref('/ddn-2/teras/' + t.n, filters)}
               className={'overview-teras-link accent-' + t.accent}
             >
+              <TerasCharacter n={t.n === 4 ? 5 : t.n} size={84} className="overview-teras-art" />
               <span className="overview-teras-number">0{t.n}</span>
               <div>
                 <h3>{t.title}</h3>

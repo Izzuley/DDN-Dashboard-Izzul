@@ -3,6 +3,15 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, CalendarClock } from 'lucide-react';
 import { Badge, DemoBadge } from './ui';
+const countryLabel = (country: string) =>
+  ({ Japan: 'Jepun', Germany: 'Jerman' })[country] ?? country;
+const labelOffsets = [
+  [-20, -22],
+  [24, 24],
+  [0, 30],
+  [15, -18],
+  [-10, -18],
+];
 const partners = [
   {
     name: 'Rakan demo A',
@@ -65,7 +74,7 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
           >
             <defs>
               <pattern id="world-grid" width="25" height="25" patternUnits="userSpaceOnUse">
-                <circle cx="1" cy="1" r=".6" fill="#3f435a" />
+                <circle cx="1" cy="1" r=".6" fill="var(--map-sea-dot)" />
               </pattern>
             </defs>
             <rect width="720" height="345" fill="url(#world-grid)" />
@@ -75,12 +84,12 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
                 d={s.path}
                 fill={
                   partners.some((p) => p.country === s.name)
-                    ? '#4b466d'
+                    ? 'var(--pm-partner)'
                     : s.name === 'Malaysia'
-                      ? '#899bb5'
-                      : '#1b2c3c'
+                      ? 'var(--pm-home)'
+                      : 'var(--pm-land)'
                 }
-                stroke="#395065"
+                stroke="var(--pm-border)"
                 strokeWidth=".45"
               />
             ))}
@@ -91,7 +100,7 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
                 <g key={p.name}>
                   <path
                     d={`M${origin.x},${origin.y} Q${(origin.x + x) / 2},${Math.min(origin.y, y) - 40} ${x},${y}`}
-                    stroke={active === i ? '#b7a6df' : '#645d82'}
+                    stroke={active === i ? 'var(--pm-arc-on)' : 'var(--pm-arc)'}
                     fill="none"
                     strokeWidth={active === i ? 1.5 : 0.7}
                     strokeDasharray="3 4"
@@ -100,23 +109,36 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
                     cx={x}
                     cy={y}
                     r={active === i ? 6 : 4}
-                    fill={active === i ? '#d4c6fa' : '#8a7aaf'}
+                    fill={active === i ? 'var(--pm-dot-on)' : 'var(--pm-dot)'}
                     tabIndex={0}
                     role="button"
-                    aria-label={`Pilih ${p.name}, lokasi contoh ${p.country}`}
+                    aria-label={`Pilih ${p.name}, lokasi contoh ${countryLabel(p.country)}`}
                     onClick={() => setActive(i)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') setActive(i);
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setActive(i);
+                      }
                     }}
                   />
-                  <text x={x + 10} y={y + 3} className="partner-map-label">
-                    {p.name.replace('Rakan demo ', '')}
+                  <path
+                    d={`M${x},${y} l${labelOffsets[i][0]},${labelOffsets[i][1]}`}
+                    className="partner-label-leader"
+                  />
+                  <text
+                    x={x + labelOffsets[i][0]}
+                    y={y + labelOffsets[i][1] - 4}
+                    textAnchor={i === 0 || i === 4 ? 'end' : i === 2 ? 'middle' : 'start'}
+                    className="partner-map-label"
+                  >
+                    {p.name.replace('Rakan demo ', '')} · {countryLabel(p.country)}
                   </text>
                 </g>
               );
             })}
-            <circle cx={origin.x} cy={origin.y} r="4" fill="#a2dcce" />
-            <text x={origin.x - 13} y={origin.y + 15} className="partner-map-label">
+            <circle cx={origin.x} cy={origin.y} r="4" fill="var(--ember)" />
+            <path d={`M${origin.x},${origin.y} L520,195`} className="partner-label-leader" />
+            <text x="516" y="200" textAnchor="end" className="partner-map-label">
               MALAYSIA
             </text>
           </svg>
@@ -128,7 +150,7 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
               className={active === i ? 'selected' : ''}
               onClick={() => setActive(i)}
             >
-              {p.name}
+              {p.name} · {countryLabel(p.country)}
             </button>
           ))}
         </div>
@@ -140,7 +162,7 @@ export function PartnerMap({ shapes }: { shapes: { name: string; path: string }[
       <aside className="partner-detail">
         <DemoBadge />
         <h3>{p.name}</h3>
-        <p>Lokasi ilustrasi: {p.country}</p>
+        <p>Lokasi ilustrasi: {countryLabel(p.country)}</p>
         <Badge tone={p.status === 'Pembaharuan' ? 'warning' : 'neutral'}>{p.status}</Badge>
         <div className="divider" />
         <h4>Tema kerjasama</h4>

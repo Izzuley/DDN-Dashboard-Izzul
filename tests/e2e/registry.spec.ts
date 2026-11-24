@@ -17,12 +17,12 @@ test('indicator registry filters on the server and keeps versioned caveats visib
   await expect(page.getByText('Formula dan wajaran keyakinan belum diluluskan')).toBeVisible();
 
   await page.getByLabel('Cari indikator').fill('komitmen');
-  await page.getByLabel('Teras').selectOption('5');
+  await page.getByLabel('Teras').selectOption('4');
   await page.getByRole('button', { name: 'Tapis', exact: true }).click();
 
-  await expect(page).toHaveURL(/\/indicators\?q=komitmen&teras=5/);
+  await expect(page).toHaveURL(/\/indicators\?q=komitmen&pillar=4/);
   await expect(page.locator('#D-T5-COMMITMENTS')).toContainText('Komitmen demo');
-  await expect(page.locator('#D-T5-COMMITMENTS')).toContainText('DEMO / SYNTHETIC');
+  await expect(page.locator('#D-T5-COMMITMENTS')).not.toContainText('DEMO / SYNTHETIC');
   await expect(page.locator('#T2-CLIENTS')).toHaveCount(0);
 });
 
@@ -33,7 +33,10 @@ test('data catalogue separates supplied and synthetic lineage without exposing r
 
   await expect(page.getByRole('heading', { name: 'Katalog data', exact: true })).toBeVisible();
   const supplied = page
-    .getByRole('heading', { name: 'Petikan Statistik Mingguan AADK', exact: true })
+    .getByRole('heading', {
+      name: 'Petikan Statistik Mingguan AADK & Buku Maklumat Dadah',
+      exact: true,
+    })
     .locator('xpath=ancestor::section');
   await expect(supplied).toContainText('Data dibekalkan');
   await expect(supplied).toContainText('Pemilik');
@@ -44,7 +47,7 @@ test('data catalogue separates supplied and synthetic lineage without exposing r
   const synthetic = page
     .getByRole('heading', { name: 'Senario analisis demonstrasi', exact: true })
     .locator('xpath=ancestor::section');
-  await expect(synthetic).toContainText('DEMO / SYNTHETIC');
+  await expect(synthetic).toContainText('Senario');
   await expect(synthetic).toContainText('tidak boleh diterbitkan sebagai data rasmi');
   await expect(page.getByText('Tiada baris operasi atau nilai terhad dipaparkan')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Buka daftar indikator' }).first()).toHaveAttribute(

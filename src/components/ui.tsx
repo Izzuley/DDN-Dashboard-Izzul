@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowUpRight, Info, CalendarDays, FileText } from 'lucide-react';
-import { dateBM, DEMO_LABEL, formatNumber, type MetricDTO } from '@/lib/domain/types';
+import { dateBM, formatNumber, type MetricDTO } from '@/lib/domain/types';
 import { displayLabel } from '@/lib/domain/display';
 
 export function Badge({
@@ -10,6 +10,7 @@ export function Badge({
   children: React.ReactNode;
   tone?: string;
 }) {
+  if (tone === 'demo') return null;
   return (
     <span className={`badge badge-${tone}`}>
       {typeof children === 'string' ? displayLabel(children) : children}
@@ -17,21 +18,23 @@ export function Badge({
   );
 }
 export function DemoBadge() {
-  return <Badge tone="demo">{DEMO_LABEL}</Badge>;
+  return null;
 }
 export function PageHeading({
   eyebrow,
   title,
   description,
   children,
+  art,
 }: {
   eyebrow: string;
   title: string;
   description: string;
   children?: React.ReactNode;
+  art?: React.ReactNode;
 }) {
   return (
-    <div className="page-heading">
+    <div className={art ? 'page-heading has-art' : 'page-heading'}>
       <div>
         <div className="eyebrow">
           <span />
@@ -41,6 +44,11 @@ export function PageHeading({
         <p>{description}</p>
       </div>
       <div className="page-heading-actions">{children}</div>
+      {art && (
+        <div className="page-heading-art" aria-hidden="true">
+          {art}
+        </div>
+      )}
     </div>
   );
 }
@@ -115,7 +123,7 @@ export function MetricCard({
         {metric ? (
           <div>
             <p>
-              {metric.definition.source}, hlm. {metric.definition.sourcePage}.
+              {displayLabel(metric.definition.source)}, hlm. {metric.definition.sourcePage}.
             </p>
             <p>
               <b>Keyakinan:</b> {metric.confidence}
@@ -138,22 +146,11 @@ export function MetricCard({
     </article>
   );
 }
-export function SourceNote({
-  children,
-  demo = false,
-}: {
-  children?: React.ReactNode;
-  demo?: boolean;
-}) {
+export function SourceNote({ children }: { children?: React.ReactNode; demo?: boolean }) {
   return (
     <div className="source-note">
       <FileText size={13} />
       <span>
-        {demo && (
-          <>
-            <b>{DEMO_LABEL}</b> ·{' '}
-          </>
-        )}
         {children ??
           'Sumber: Statistik Mingguan AADK, 9 Ogos 2026 · halaman 2. Nilai petikan dibekalkan; bukan suapan langsung.'}
       </span>

@@ -31,7 +31,7 @@ Every KPI, dataset and material visual must carry one evidence status:
 
 ### 3.1 In scope
 
-- **FR-001:** The application MUST provide an executive overview and one page for each of the five Teras.
+- **FR-001:** The application MUST provide an executive overview and one page for each of the four DDN 2.0 Teras.
 - **FR-002:** It MUST provide a strategic Malaysia map with state-level views and conditional district drill-down.
 - **FR-003:** It MUST provide consistent, URL-addressable filters and comparisons.
 - **FR-004:** It MUST support controlled CSV/XLSX submission, validation, review, approval, publication and revision.
@@ -78,19 +78,21 @@ The implementation MUST provide or deliberately phase these routes:
 
 | Route | V1 purpose |
 |---|---|
-| `/` | Executive overview and cross-Teras alerts. |
-| `/teras/1` | Pendidikan Pencegahan. |
-| `/teras/2` | Rawatan dan Pemulihan. |
-| `/teras/3` | Penguatkuasaan. |
-| `/teras/4` | Pengurangan Kemudaratan. |
-| `/teras/5` | Kerjasama Antarabangsa. |
-| `/map` | Full-screen map and comparison workspace. |
+| `/` | Scenario Semasa: combined executive overview, strategic Malaysia map and comparison workspace. |
+| `/ddn-2/teras/1` | Pencegahan Pintar & Generasi Celik. |
+| `/ddn-2/teras/2` | Pemulihan Tingkah Laku & Kesihatan Awam; separately scoped treatment and harm subviews. |
+| `/ddn-2/teras/3` | Penguatkuasaan Proaktif dan Ramalan Risiko. |
+| `/ddn-2/teras/4` | Kerjasama Antarabangsa & Tadbir Urus Inklusif. |
+| `/teras/1..5` | Legacy domain redirects; original harm domain 4 maps to current pillar 2 and international domain 5 to current pillar 4. |
+| `/map` | Compatibility redirect to `/`, preserving all URL filters and selected state. |
 | `/data/uploads` | Templates, submissions, validation, approval and versions. |
 | `/data/catalog` | Dataset ownership, freshness, fields and lineage. |
 | `/indicators` | KPI definitions, formulae, targets and versions. |
 | `/actions` | Cross-agency actions and closure evidence. |
 | `/reports` | Saved views and export history. |
 | `/admin/*` | Scoped reference and access administration. |
+
+User-approved navigation consolidation, 7 October 2026: Gambaran nasional and Peta strategik share one page named `Scenario Semasa`. This changes page organisation for FR-001/FR-002/FR-003, not their capabilities or any MAP acceptance criteria.
 
 - **FR-030:** Every Teras page SHOULD show page purpose, responsible status, refresh time, KPI cards, a primary strategic visual, trend/comparison panels, a ranked table, quality/coverage, notes/actions and source/formula/caveat access.
 - **FR-031:** Every page SHOULD organise relevant indicators through needs, process, outcome, cost and satisfaction perspectives.
@@ -128,6 +130,7 @@ The implementation MUST provide or deliberately phase these routes:
 
 - **MAP-010:** Red/yellow/orange/green classification MUST use approved, effective-dated rules.
 - **MAP-011:** If rules are unapproved, V1 MUST label the layer as demo and provide an explicit method explanation.
+- User-approved visual clarification (7 October 2026, MAP-010/011): supplied 2024–2025 burden rates may use `supplied-relative-range-v1`, dividing positive disclosed rates into three equal intervals with green/amber/red. Label the colour method DEMO and values supplied; expose boundaries and distinguish relative rates from official threat zoning. No official threat classification is approved.
 - **MAP-012:** Any composite calculation MUST expose its component observations, transformations, weights, missing-data rule and minimum coverage rule.
 - **MAP-013:** Score methodology changes MUST create a new version.
 - **MAP-014:** Every layer MUST retain access to raw values and rates.
@@ -389,11 +392,11 @@ Teras 5 manages bilateral/multilateral relationships and demonstrates whether en
 
 V1 is complete only when:
 
-- **ACC-020:** The overview and five Teras pages meet their page acceptance criteria.
+- **ACC-020:** The overview and four DDN 2.0 Teras pages (including both treatment and harm subviews) meet their page acceptance criteria.
 - **ACC-021:** The threat map keeps burden, supply, harm, service gap and confidence distinct.
 - **ACC-022:** No unapproved official zone thresholds or composite weights are presented.
 - **ACC-023:** Supported real indicators reconcile to the weekly report.
-- **ACC-024:** Unsupported scenarios are unmistakably `DEMO / SYNTHETIC` across screen and export.
+- **ACC-024:** Unsupported scenarios retain their synthetic classification and source provenance. Per the human-approved dashboard display revision (21 October 2026), dashboard DEMO / SYNTHETIC badges and repeated classification labels are removed; source descriptions and applicable filter/workflow wording may describe fictional scenarios in plain language. Export and upload-contract classification remains `DEMO / SYNTHETIC`.
 - **ACC-025:** Every displayed KPI exposes definition, source, owner status, period, freshness, confidence and version.
 - **ACC-026:** Upload, validation, independent approval, publication and revision work as a traceable loop.
 - **ACC-027:** Permission, disclosure, audit and self-approval controls pass.
@@ -426,3 +429,18 @@ V1 is complete only when:
 10. Availability, support, RTO/RPO, devices, browsers and operational ownership.
 
 Codex must record these as blockers or demo assumptions in `PLANS.md`; it must not manufacture answers.
+
+## Approved DDN 2.0 restructuring — 26 October 2026
+
+The client reference images and explicit human approval replace the current navigation with four Teras. This is a presentation-policy mapping, not a retroactive change to DDN 2017 or stored resource permissions.
+
+| Current pillar | Approved title | Original domains |
+|---|---|---|
+| 1 | Pencegahan Pintar & Generasi Celik | 1: prevention |
+| 2 | Pemulihan Tingkah Laku & Kesihatan Awam | 2: treatment; 4: harm reduction |
+| 3 | Penguatkuasaan Proaktif dan Ramalan Risiko | 3: enforcement |
+| 4 | Kerjasama Antarabangsa & Tadbir Urus Inklusif | 5: international |
+
+Canonical routes are /ddn-2/teras/1..4. Legacy /teras/4 redirects to current pillar 2's harm subview; /teras/5 redirects to current pillar 4. Stored teras values and API v1 teras fields remain original domain identifiers (1–5). Treatment and harm grants remain separate. Original T4/T5 requirement and KPI identifiers retain their meanings; their current presentation locations are pillar 2/pillar 4 respectively. No original data, immutable publications or reports are renumbered.
+
+Titles do not authorize forecasting/predictive policing, new clinical definitions, expanded permissions or exclusive agency assignments. DDN 2017 responsibility statements remain historical; DDN 2.0 commencement and current authority require stakeholder validation. Prior ACC-024 dashboard-label exception and export/upload classification controls remain unchanged. See docs/superpowers/specs/2026-10-26-ddn2-restructuring-design.md and docs/DDN2_IMPACT_ASSESSMENT.md.

@@ -1,0 +1,664 @@
+/* Visual theme adopted from the user-supplied ddndashboard.vercel.app reference, 7 October 2026. */
+@media screen {
+  :root {
+    --bg: light-dark(#fbf8f4, #151310);
+    --sidebar: light-dark(#fcfaf7, #12110f);
+    --panel: light-dark(#f3efeb, #1f1d1a);
+    --panel-raised: light-dark(#ece8e3, #2a2623);
+    --border: light-dark(#e2dbd4, #3b3631);
+    --border-soft: light-dark(#e9e3dd, #302b27);
+    --text: light-dark(#171512, #f0ede9);
+    --muted: light-dark(#4b4844, #b1aca8);
+    --dim: light-dark(#5f5a55, #a19c97);
+    --teal: light-dark(#9b3800, #e97849);
+    --teal-dark: light-dark(#ffe2d7, #3f1a0a);
+    --radius: 18px;
+  }
+  body {
+    background:
+      radial-gradient(ellipse at 80% 0, light-dark(#ff681e24, #b0400024), transparent 42%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+  ::selection {
+    background: light-dark(#7c2b00, #ef916d);
+    color: light-dark(#fff8f0, #181109);
+  }
+  :focus-visible {
+    outline: 3px solid light-dark(#913300, #ec8054);
+    outline-offset: 4px;
+  }
+  .sidebar {
+    background:
+      radial-gradient(ellipse at 0 5%, light-dark(#ff630a1c, #b341001c), transparent 34%),
+      light-dark(#fcfaf7, #12110f);
+    border-color: light-dark(#09090912, #ffffff12);
+    padding-top: 25px;
+  }
+  .brand {
+    gap: 11px;
+  }
+  .sidebar > * {
+    flex-shrink: 0;
+  }
+  .brand-emblem {
+    flex-shrink: 0;
+    filter: drop-shadow(0 6px 15px light-dark(#a63c0018, #a63c0036));
+  }
+  .brand strong {
+    color: light-dark(#14110d, #f6f1ec);
+    font-size: 1.9375rem;
+    letter-spacing: -1px;
+  }
+  .brand small {
+    color: light-dark(#4e4843, #b1aba5);
+    letter-spacing: 3.8px;
+  }
+  .brand-subtitle {
+    color: light-dark(#635a51, #a49b91);
+    margin-bottom: 20px;
+  }
+  .brand-mission {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 12px;
+    padding: 20px 17px 16px;
+    border: 1px solid light-dark(#a43b0052, #e86f3d52);
+    border-radius: 16px;
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#da5200, #ce4d00), transparent 76%),
+      linear-gradient(
+        140deg,
+        light-dark(#ff976e, #963500),
+        light-dark(#ffe1d5, #471500) 76%,
+        light-dark(#f9f2eb, #1d1813)
+      );
+    box-shadow:
+      0 10px 28px light-dark(#00000017, #00000033),
+      inset 0 1px #f4ab8f4d;
+    color: light-dark(#12100d, #f8f3ef);
+  }
+  .brand-mission:after {
+    content: '';
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    top: -51px;
+    right: -52px;
+    border: 22px solid light-dark(#09090933, #ffffff33);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .mission-kicker {
+    font-size: 0.875rem;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+  }
+  .brand-mission strong {
+    display: block;
+    font-family: var(--heading);
+    font-size: 1.4375rem;
+    line-height: 1.35;
+    letter-spacing: -0.7px;
+    margin: 11px 0 16px;
+  }
+  .mission-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+  }
+  .nav-section-label {
+    color: light-dark(#58534d, #a8a29b);
+    font-size: 0.875rem;
+  }
+  .nav-item {
+    color: light-dark(#45423f, #b6b3ae);
+    border-radius: 10px;
+    transition:
+      background 0.18s,
+      color 0.18s;
+  }
+  .nav-item small {
+    color: light-dark(#625e59, #9e9994);
+  }
+  .nav-item:hover {
+    color: light-dark(#17130f, #f4eee8);
+    background: light-dark(#0909090a, #ffffff0a);
+  }
+  .nav-item.active {
+    color: light-dark(#56220b, #f5b49a);
+    background: linear-gradient(
+      100deg,
+      light-dark(#ea58002e, #c248002e),
+      light-dark(#ea580008, #c2480008)
+    );
+    box-shadow: inset 0 0 0 1px #d14e0029;
+  }
+  .nav-item.active:before {
+    background: light-dark(#e35500, #c84a00);
+    box-shadow: 0 0 16px #c2480099;
+    height: 24px;
+  }
+  .environment small,
+  .environment strong {
+    color: light-dark(#4e4843, #b1aba5);
+  }
+  .sidebar-bottom {
+    padding-top: 20px;
+  }
+  .topbar {
+    background: light-dark(#fcf7f3c9, #16130fc9);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+    border-color: light-dark(#0909090d, #ffffff0d);
+  }
+  .profile select,
+  .topbar-context {
+    color: light-dark(#34302b, #cdc8c3);
+  }
+  .profile label > span {
+    color: light-dark(#5f5850, #a59d95);
+  }
+  .country-tag {
+    color: light-dark(#7a2a00, #ef936f);
+    background: light-dark(#ff681c14, #b0400014);
+    border-color: light-dark(#e2550038, #c94b0038);
+    border-radius: 6px;
+  }
+  .profile-avatar {
+    color: light-dark(#52210c, #f6b79f);
+    background: linear-gradient(140deg, light-dark(#ffc4ae, #742800), light-dark(#f8ede1, #251d14));
+    border-color: light-dark(#d8622f66, #c24f1866);
+  }
+  .page-content {
+    padding-top: 32px;
+  }
+  .page-heading {
+    position: relative;
+    padding: 30px 30px 32px;
+    border: 1px solid light-dark(#8e320024, #eb835a24);
+    border-radius: 22px;
+    background:
+      radial-gradient(ellipse at 90% 0, light-dark(#e2550048, #c94b0048), transparent 62%),
+      linear-gradient(
+        115deg,
+        light-dark(#f5efe8, #211d17),
+        light-dark(#faf3eb, #1c1712) 65%,
+        light-dark(#f9eee2, #241c13)
+      );
+    box-shadow:
+      inset 0 1px #ffffff11,
+      0 20px 50px light-dark(#00000008, #00000012);
+  }
+  .page-heading:after {
+    content: '';
+    position: absolute;
+    height: 2px;
+    left: 30px;
+    right: 30px;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      light-dark(#9e390000, #e9754500),
+      light-dark(#e85700aa, #c44900aa),
+      light-dark(#9e390000, #e9754500)
+    );
+  }
+  .page-heading h1 {
+    letter-spacing: -1.5px;
+    color: light-dark(#13100d, #f7f2ed);
+  }
+  .page-heading p {
+    color: light-dark(#4c453e, #b6aea6);
+    max-width: 68ch;
+    line-height: 1.7;
+  }
+  .eyebrow {
+    color: light-dark(#883c1b, #dd8968);
+  }
+  .eyebrow > span {
+    background: light-dark(#c84a00, #dc5300);
+    box-shadow: 0 0 12px #c94b0077;
+  }
+  .button {
+    border-radius: 10px;
+    transition:
+      transform 0.18s,
+      box-shadow 0.18s,
+      background 0.18s;
+  }
+  .button:hover {
+    transform: translateY(-1px);
+  }
+  .button-primary,
+  .page-heading .button-secondary {
+    color: light-dark(#fffbf8, #140d06);
+    border-color: light-dark(#b34200, #e56226);
+    background: linear-gradient(135deg, light-dark(#ab3e00, #e66933), light-dark(#e85700, #c44900));
+    box-shadow:
+      0 5px 22px #a93d0022,
+      inset 0 1px #e0d5c988;
+  }
+  .button-primary:hover,
+  .page-heading .button-secondary:hover {
+    background: light-dark(#802d00, #ee8e68);
+    box-shadow: 0 7px 28px #a93d0038;
+  }
+  .button-secondary {
+    background: light-dark(#eee7df, #2c2620);
+    color: light-dark(#241e18, #e6ded6);
+    border-color: light-dark(#dacfc4, #4e463c);
+  }
+  .button-secondary:hover {
+    background: light-dark(#e9dfd3, #383027);
+    border-color: light-dark(#d46f46, #b55329);
+  }
+  .snapshot-chip {
+    color: light-dark(#613321, #dea691);
+    background: light-dark(#09090908, #ffffff08);
+    border-color: light-dark(#e17d564a, #a94b224a);
+    border-radius: 10px;
+  }
+  .filter-wrapper {
+    background: light-dark(#f2ede7e6, #231f1ce6);
+    border-color: light-dark(#622e1826, #e6a78e26);
+    border-radius: 13px;
+    box-shadow: 0 8px 24px light-dark(#00000008, #00000012);
+  }
+  .filter-bar > label {
+    border-color: light-dark(#ddd3c9, #484037);
+  }
+  .filter-label,
+  .filter-more {
+    color: light-dark(#4e463e, #b5aca2);
+  }
+  .filter-bar select {
+    color: light-dark(#221d18, #e6dfd8);
+  }
+  .panel-body input:not([type='checkbox']):not([type='file']),
+  .panel-body select,
+  .panel-body textarea,
+  input,
+  select,
+  textarea {
+    background-color: light-dark(#f2ede7, #231f1b);
+    border-color: light-dark(#ded4c9, #473f36);
+  }
+  select option {
+    background: light-dark(#f2ede7, #231f1b);
+    color: light-dark(#171512, #f0ede9);
+  }
+  .perspective-tabs {
+    padding: 5px;
+    gap: 5px;
+    border: 1px solid light-dark(#09090912, #ffffff12);
+    background: light-dark(#f6f2ed, #1d1916);
+    border-radius: 12px;
+  }
+  .perspective-tabs a {
+    border: 0;
+    border-radius: 8px;
+  }
+  .perspective-tabs a[aria-current='page'] {
+    color: light-dark(#5f2408, #f4ab8f);
+    background: linear-gradient(
+      110deg,
+      light-dark(#ffa5813f, #8d32003f),
+      light-dark(#ff7e4820, #a53c0020)
+    );
+    box-shadow: inset 0 0 0 1px #e76b3638;
+  }
+  .disclosure,
+  .panel {
+    background: linear-gradient(150deg, light-dark(#f1ece6, #24201c), light-dark(#f3f0ec, #1f1c1a));
+    border-color: light-dark(#09090915, #ffffff15);
+    box-shadow: 0 8px 24px light-dark(#00000009, #00000015);
+  }
+  .panel-heading {
+    border-bottom: 1px solid light-dark(#0909090b, #ffffff0b);
+  }
+  .disclosure-meta {
+    color: light-dark(#524b43, #b1a89f);
+  }
+  .section-label {
+    color: light-dark(#3f372e, #c8beb3);
+  }
+  .source-note {
+    color: light-dark(#655c52, #a3998e);
+  }
+  .metric-card {
+    --text: light-dark(#f3ece4, #25201b);
+    --muted: light-dark(#c6bfb7, #58514b);
+    --teal: light-dark(#ffcfbc, #632100);
+    background: linear-gradient(145deg, light-dark(#0f0d0b, #faf8f5), light-dark(#1f1c18, #e7e2de));
+    border: 1px solid light-dark(#231b13, #ece1d5);
+    border-radius: 17px;
+    color: light-dark(#f3ece4, #25201b);
+    padding: 21px 20px 15px;
+    box-shadow:
+      0 12px 30px light-dark(#0000000f, #00000022),
+      inset 0 1px #ffffff;
+    transition:
+      transform 0.2s,
+      box-shadow 0.2s;
+  }
+  .metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px light-dark(#00000017, #00000033);
+  }
+  .metric-card .flat-line,
+  .metric-card .metric-comparison,
+  .metric-card .metric-details summary,
+  .metric-card .metric-footer,
+  .metric-card .metric-number > span,
+  .metric-card .metric-top,
+  .metric-card .subtle-icon {
+    color: light-dark(#c1bab2, #5b544e);
+  }
+  .metric-card .metric-number {
+    color: light-dark(#f4ebe2, #26201a);
+    font-weight: 800;
+    letter-spacing: -1.8px;
+  }
+  .metric-card .metric-footer {
+    border-color: light-dark(#f2bfac29, #683e2e29);
+  }
+  .metric-card .badge {
+    background: light-dark(#29241f, #dcd6d0);
+    color: light-dark(#e0d5c9, #463d33);
+    border-color: light-dark(#51493f, #b4aa9f);
+  }
+  .metric-card .badge-source {
+    background: light-dark(#1b1815, #ece8e3);
+    color: light-dark(#97ccb5, #2c5f4b);
+    border-color: light-dark(#39332c, #cbc3ba);
+  }
+  .metric-card .badge-demo {
+    background: light-dark(#4c2210, #f3bca7);
+    color: light-dark(#ffd6c6, #581c00);
+    border-color: light-dark(#9e5030, #cb7959);
+  }
+  .metrics-grid > .metric-card:first-child:not(.demo-metric) {
+    --text: light-dark(#17130f, #f4eee8);
+    --muted: light-dark(#401c0d, #f9c8b5);
+    --teal: light-dark(#2a2219, #e2d7cb);
+    color: light-dark(#17130f, #f4eee8);
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#cf4d00b3, #d75000b3), transparent 70%),
+      linear-gradient(
+        155deg,
+        light-dark(#ffba9f, #7f2c00),
+        light-dark(#ffc8b2, #6f2500) 43%,
+        light-dark(#f4e9dd, #2a2219)
+      );
+    border-color: light-dark(#a13a0075, #e8724175);
+    box-shadow:
+      0 12px 40px light-dark(#a43b0011, #a43b0026),
+      inset 0 1px #f6b9a166;
+  }
+  .metrics-grid
+    > .metric-card:first-child:not(.demo-metric)
+    :is(
+      .metric-number,
+      .metric-top,
+      .metric-number > span,
+      .metric-comparison,
+      .flat-line,
+      .metric-footer,
+      .metric-details summary,
+      .subtle-icon
+    ) {
+    color: light-dark(#1a1510, #f1eae2);
+  }
+  .metrics-grid > .metric-card:first-child:not(.demo-metric) .metric-footer {
+    border-color: light-dark(#09090930, #ffffff30);
+  }
+  .metrics-grid > .metric-card:first-child:not(.demo-metric) .badge-source {
+    background: light-dark(#f9eee2b3, #231c13b3);
+    color: light-dark(#1e1811, #efe6dd);
+    border-color: light-dark(#53210b5c, #f6b69e5c);
+  }
+  .overview-figures {
+    background: light-dark(#181513, #efece8);
+    border-color: light-dark(#2c241b, #e0d5c9);
+    border-radius: 18px 18px 0 0;
+    color: light-dark(#f3ece5, #241f1a);
+    padding: 18px;
+    gap: 20px;
+  }
+  .overview-total {
+    padding: 23px;
+    border-radius: 13px;
+    align-self: stretch;
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#c44900, #df5400), transparent 85%),
+      linear-gradient(145deg, light-dark(#ffb598, #822d00), light-dark(#f3e8dc, #2b231a));
+    box-shadow: 0 8px 20px light-dark(#7829000e, #78290020);
+  }
+  .overview-breakdown .overview-part-label,
+  .overview-figures .metric-number > span,
+  .overview-figures h3,
+  .overview-figures p {
+    color: light-dark(#d0c5ba, #554c42);
+  }
+  .overview-figures .metric-number {
+    color: light-dark(#f4ebe2, #26201a);
+    font-weight: 800;
+  }
+  .overview-total .metric-number,
+  .overview-total .metric-number > span,
+  .overview-total h3,
+  .overview-total p {
+    color: light-dark(#14110d, #f6f1ec);
+  }
+  .overview-breakdown {
+    border: 0;
+    padding-left: 0;
+  }
+  .overview-complaints {
+    border-color: light-dark(#3c362e, #c8c0b7);
+    padding: 16px 0 16px 22px;
+  }
+  .overview-source-details {
+    background: light-dark(#f4eee7, #221e18);
+    border-radius: 0 0 18px 18px;
+    border-color: light-dark(#d4795540, #aa543040);
+  }
+  .overview-source-details summary {
+    color: light-dark(#433b31, #c3b9ad);
+  }
+  .overview-source-body a,
+  .overview-source-links a {
+    color: light-dark(#802d00, #ee8e68);
+  }
+  .overview-teras-link {
+    background: linear-gradient(140deg, light-dark(#f6ebdf, #271f17), light-dark(#f5f0eb, #1f1b18));
+    border-radius: 14px;
+    border-color: light-dark(#b6430030, #e55f2030);
+  }
+  .overview-teras-link:hover {
+    background: light-dark(#f1e6da, #2e261d);
+    border-color: light-dark(#b6430070, #e55f2070);
+  }
+  .overview-teras-link h3 {
+    color: light-dark(#27221c, #e1d9d1);
+  }
+  .bar-track {
+    background: light-dark(#0909090a, #ffffff0a);
+  }
+  .bar-track > span,
+  .funnel-bar {
+    background-image: linear-gradient(
+      90deg,
+      light-dark(#ff6d29, #ae3f00),
+      light-dark(#95350080, #eb7b4e80)
+    );
+    border-radius: 5px;
+  }
+  .care-detail {
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#f65d0021, #ba440021), transparent 80%),
+      light-dark(#f3ece5, #241f1a);
+  }
+  .followup-loss {
+    border-color: light-dark(#ffc3ac55, #69341f55);
+  }
+  .compact-select select,
+  .layer-select,
+  .segmented {
+    background: light-dark(#f2ece5, #25211b);
+    border-color: light-dark(#ded3c8, #483f36);
+    border-radius: 8px;
+    color: light-dark(#52493f, #b3a99e);
+  }
+  .segmented button {
+    color: light-dark(#52493f, #b3a99e);
+  }
+  .segmented button.selected {
+    background: light-dark(#ffd0be, #5b2711);
+    color: light-dark(#441d0d, #f7c4b1);
+    border-radius: 5px;
+  }
+  .app-footer {
+    color: light-dark(#60584f, #a69d93);
+    border-color: light-dark(#09090912, #ffffff12);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .page-heading {
+      animation: identity-enter 0.5s ease-out both;
+    }
+    .metrics-grid,
+    .overview-figures {
+      animation: identity-enter 0.65s ease-out both;
+    }
+    @keyframes identity-enter {
+      0% {
+        transform: translateY(9px);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+  }
+  @media (max-width: 900px) {
+    .page-heading {
+      padding: 24px;
+    }
+    .overview-treatment {
+      gap: 18px;
+    }
+  }
+  @media (max-width: 650px) {
+    .page-heading {
+      padding: 22px 18px;
+      border-radius: 17px;
+      gap: 16px;
+    }
+    .page-heading h1 {
+      letter-spacing: -0.8px;
+    }
+    .page-heading:after {
+      left: 18px;
+      right: 18px;
+    }
+    .metric-card {
+      padding: 18px 16px 14px;
+    }
+    .overview-figures {
+      padding: 12px;
+      gap: 18px;
+    }
+    .overview-total {
+      padding: 21px;
+    }
+    .overview-breakdown {
+      padding: 4px 8px;
+    }
+    .overview-complaints {
+      padding: 16px 8px 8px;
+    }
+    .perspective-tabs {
+      gap: 3px;
+    }
+    .perspective-tabs a {
+      padding: 10px 11px;
+    }
+  }
+}
+@media screen {
+  .brand-emblem {
+    width: 64px;
+    height: 64px;
+    filter: drop-shadow(0 4px 12px light-dark(#00000026, #00000055));
+  }
+  .brand-dot {
+    color: light-dark(#a5223c, #f06a79);
+  }
+  .brand-mission {
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#d85100a6, #d04e00a6), transparent 76%),
+      linear-gradient(
+        140deg,
+        light-dark(#ff8f91, #a51931),
+        light-dark(#ffcef8, #492145) 52%,
+        light-dark(#ffd5c5, #591c00)
+      );
+    border-color: light-dark(#76280055, #f3957155);
+  }
+  .page-heading {
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#ff878f40, #a71f3940), transparent 65%),
+      linear-gradient(
+        115deg,
+        light-dark(#ffddd0, #4d1700),
+        light-dark(#ffe7df, #3c1201) 65%,
+        light-dark(#e9e4ff, #292044)
+      );
+  }
+  .page-heading:after {
+    background: linear-gradient(
+      90deg,
+      transparent,
+      light-dark(#c55522, #cd5c2a),
+      light-dark(#db5975, #c34361),
+      transparent
+    );
+  }
+  .button-primary,
+  .page-heading .button-secondary {
+    color: light-dark(#090909, #ffffff);
+    border-color: light-dark(#a4243e, #ef6b7b);
+    background: linear-gradient(135deg, light-dark(#f65b6d, #c32844), light-dark(#ff979b, #9f1932));
+    box-shadow:
+      0 5px 22px light-dark(#a91d3511, #a91d3526),
+      inset 0 1px #ffffff38;
+  }
+  .button-primary:hover,
+  .page-heading .button-secondary:hover {
+    color: light-dark(#090909, #ffffff);
+    background: light-dark(#ff6f7d, #b32640);
+    box-shadow: 0 7px 24px #c22b4438;
+  }
+  .nav-item.active:before {
+    background: light-dark(#bf2646, #eb5369);
+    box-shadow: 0 0 14px #ef536877;
+  }
+  .metrics-grid > .metric-card:first-child:not(.demo-metric) {
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#d0446670, #d4486970), transparent 80%),
+      linear-gradient(
+        150deg,
+        light-dark(#ff8388, #ac1b35),
+        light-dark(#ffc1ca, #781a35) 48%,
+        light-dark(#ffd6c7, #571c00)
+      );
+    border-color: light-dark(#7f2e4a5c, #e388a25c);
+  }
+  .overview-total {
+    background:
+      radial-gradient(ellipse at 100% 0, light-dark(#d0375955, #de456455), transparent 85%),
+      linear-gradient(145deg, light-dark(#ff9093, #a41931), light-dark(#ffd6c7, #571c00));
+  }
+}

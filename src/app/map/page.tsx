@@ -1,17 +1,15 @@
 import { redirect } from 'next/navigation';
 
-// The strategic map now lives on the national overview. This route is kept so
-// existing links and bookmarks continue to work, carrying their filters over.
-export default async function MapPage({
+// Preserve old bookmarks and saved URLs without maintaining a second workspace.
+export default async function LegacyMapPage({
   searchParams,
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const params = new URLSearchParams();
+  const query = new URLSearchParams();
   for (const [key, value] of Object.entries(await searchParams)) {
-    if (typeof value === 'string') params.set(key, value);
-    else if (Array.isArray(value) && value[0] !== undefined) params.set(key, value[0]);
+    if (Array.isArray(value)) value.forEach((item) => query.append(key, item));
+    else if (value !== undefined) query.set(key, value);
   }
-  const query = params.toString();
-  redirect(query ? `/?${query}` : '/');
+  redirect(query.size ? `/?${query}` : '/');
 }
